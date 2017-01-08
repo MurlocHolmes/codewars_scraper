@@ -4,7 +4,7 @@ import re
 import config
 
 
-class Codewars_kata:
+class CodewarsKata:
     file_extensions = config.file_extensions
 
     def __init__(self, browser):
@@ -18,6 +18,7 @@ class Codewars_kata:
         self.file_path = self.create_full_file_path()
         self.description = None
 
+    # Creates solution file and directory; returns true if successful
     def create_solution(self):
         if self.create_directory():
             self.create_solution_file()
@@ -25,6 +26,7 @@ class Codewars_kata:
         else:
             return False
 
+    # Creates readme file for git repo
     def create_readme(self):
         self.open_new_tab()
         self.go_to_kata_details()
@@ -53,12 +55,11 @@ class Codewars_kata:
     def get_file_extension(self):
         return "." + self.file_extensions[self.language]
 
+    # Takes the Kata name, replaces spaces with underscores and makes it all lowercase
     def create_file_name(self):
-        name = self.remove_special_characters(self.name)
-        name_array = name.split()
-        file_name = name_array.pop(0).lower()
-        for string in name_array:
-            file_name += string.capitalize()
+        file_name = self.remove_special_characters(self.name)
+        file_name = file_name.replace(" ", "_")
+        file_name = file_name.lower()
         return file_name
 
     def create_folder_name(self):

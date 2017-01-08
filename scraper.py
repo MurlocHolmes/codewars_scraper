@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from codewars_kata import Codewars_kata
+from codewars_kata import CodewarsKata
 import config
 
 
@@ -44,7 +44,7 @@ class Scraper:
         self.go_to_codewars_solutions()
         solutions = self.get_codewars_kata_solutions()
         for solution in solutions:
-            k = Codewars_kata(solution)
+            k = CodewarsKata(solution)
             was_created = k.create_solution()
             if was_created:
                 print("Was created")
