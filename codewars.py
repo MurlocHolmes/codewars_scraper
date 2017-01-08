@@ -1,6 +1,6 @@
 #! python3
 
-from scraper import Scraper
+from scraper.scraper import Scraper
 
 
 scraper = Scraper()
