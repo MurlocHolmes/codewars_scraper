@@ -1,0 +1,6 @@
+def DNA_strand(dna):
+    DNA_dictionary = { 'A' : 'T', 'T' : 'A', 'G' : 'C', 'C' : 'G' }
+    dna_compliment = ''
+    for char in dna:
+        dna_compliment += DNA_dictionary[char]
+    return dna_compliment

@@ -1,0 +1,6 @@
+def is_isogram(string):
+    lower_cased = string.lower()
+    for char in lower_cased:
+        if lower_cased.count(char) > 1:
+            return False
+    return True

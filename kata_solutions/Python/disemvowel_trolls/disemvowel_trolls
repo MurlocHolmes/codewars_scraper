@@ -1,0 +1,7 @@
+import re
+def disemvowel(string):
+    disemvoweled = ''
+    for char in string:
+        if(re.match('[AaEeIiOoUu]', char) == None):
+            disemvoweled += char
+    return disemvoweled

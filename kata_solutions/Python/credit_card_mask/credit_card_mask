@@ -1,0 +1,9 @@
+# return masked string
+def maskify(cc):
+    string_length = len(cc)
+    if(string_length < 5):
+        return cc
+    censored = string_length - 4
+    new_string = '#' * censored + cc[censored:]
+    return new_string
+    pass

@@ -1,0 +1,13 @@
+# Repeat each character n times, where n = place in string
+# and concatenate each character-string to a return string
+# seperated by '-'. Capitalize the first character of each
+# character-string. Example: 
+# accum('abcd')
+# return: "A-Bb-Ccc-Dddd"
+def accum(s):
+    length = 1
+    string = ''
+    for char in s:
+        string += (char * length).capitalize() + '-'
+        length+=1
+    return string[:-1]

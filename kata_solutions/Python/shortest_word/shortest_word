@@ -1,0 +1,7 @@
+def find_short(s):
+    strings = s.split()
+    l = len(strings[0])
+    for string in strings:
+        if(len(string) < l):
+            l = len(string)
+    return l # l: shortest word length

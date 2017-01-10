@@ -1,0 +1,7 @@
+def get_sum(a,b):
+    if(a>b):
+        a,b = b,a
+    sum = b
+    for i in range(a,b):
+        sum += i
+    return sum

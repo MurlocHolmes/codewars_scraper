@@ -1,0 +1,9 @@
+def iq_test(numbers):
+    number_array = map(int, numbers.split(" "))
+    evenness = number_array[0]%2
+    if(evenness!=number_array[1]%2):
+        evenness = number_array[2]%2
+    for i in range(0, len(number_array)):
+        if(number_array[i]%2!=evenness):
+            return i+1;
+        
