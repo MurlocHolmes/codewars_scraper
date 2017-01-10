@@ -1,11 +1,15 @@
 from selenium import webdriver
 import os
 import re
-import config
+from .config import Config
+import requests
+from lxml import html
+import bs4
+import time
 
 
 class CodewarsKata:
-    file_extensions = config.file_extensions
+    file_extensions = Config.file_extensions
 
     def __init__(self, browser):
         self.browser = browser
@@ -16,6 +20,7 @@ class CodewarsKata:
         self.file_name = self.create_file_name()
         self.folder_name = self.create_folder_name()
         self.file_path = self.create_full_file_path()
+        self.phantom = None
         self.description = None
 
     # Creates solution file and directory; returns true if successful
@@ -28,11 +33,9 @@ class CodewarsKata:
 
     # Creates readme file for git repo
     def create_readme(self):
-        self.open_new_tab()
-        self.go_to_kata_details()
-        self.description = self.find_description()
+        session = self.go_to_kata_details()
+        self.description = self.find_description(session)
         self.create_readme_file()
-        self.close_tab()
 
     def find_name(self):
         return self.browser.find_element_by_tag_name('a').text
@@ -44,10 +47,7 @@ class CodewarsKata:
         return self.browser.find_element_by_tag_name('code').text
 
     def find_detail_link(self):
-        return self.browser.find_element_by_tag_name('a')
-
-    def find_description(self):
-        return self.browser.find_element_by_id("description")
+        return self.browser.find_element_by_tag_name('a').get_attribute("href")
 
     def remove_special_characters(self, string):
         return re.sub("[^0-9a-zA-Z ]+", "", string)
@@ -68,31 +68,33 @@ class CodewarsKata:
     def create_full_file_path(self):
         folder_name = self.create_folder_name()
         file_name = self.file_name + self.get_file_extension()
-        return folder_name + file_name
+        return "kata_solutions/" + folder_name
 
     def create_directory(self):
         try:
-            os.makedirs(self.folder_name)
+            os.makedirs(self.file_path)
             return True
         except FileExistsError:
-            print("Folder existed, moving forward")
+            print(self.file_path + " already existed, moving to next kata")
             return False
 
     def create_solution_file(self):
-        solution_file = open(self.file_path, "w")
+        solution_file = open(self.file_path + self.file_name, "w")
         solution_file.write(self.solution)
         solution_file.close()
 
+    def go_to_kata_details(self):
+        details = requests.get(self.detail_link)
+        return details
+
+    def find_description(self, session):
+        source = bs4.BeautifulSoup(session.text, "html.parser")
+        p = re.compile('(?<="description":).*(?=,"activeLanguage)')
+        description = p.findall(source.get_text())[0]
+        return description
+
     def create_readme_file(self):
-        readme_file = open(self.folder_name + "README.md", "w")
-        readme_file.write(self.description.text)
+        readme_file = open(self.file_path + "README.md", "w")
+        readme_file.write(self.description.replace('\\n','\n'))
         readme_file.close()
 
-    def open_new_tab(self):
-        self.browser = webdriver.PhantomJS()
-
-    def go_to_kata_details(self):
-        self.browser.get(self.detail_link.get_attribute("href"))
-
-    def close_tab(self):
-        self.browser.close()
