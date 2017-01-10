@@ -1,0 +1,1 @@
+Each of these folders is named after a language. The language is what the enclosed Kata solutions are written in. Each Kata has a description that is provided by the Kata author
